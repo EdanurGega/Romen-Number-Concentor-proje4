@@ -20,52 +20,52 @@ Parameters:
     Type: AWS::EC2::KeyPair::KeyName
 
 Resources:
-WebServerSecurityGroup:
-  Type: AWS::EC2::SecurityGroup
-  Properties:
-    GroupDescription: Enable HTTP for Flask Web Server and SSH port to secure reach to my EC2
-    GroupName: eda-roman-number-conventer
-    SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp #required
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 8080
-        ToPort: 8080
-        CidrIp: 0.0.0.0/0
-WebServerHost:
-  Type: AWS::EC2::Instance
-  Properties:
-    ImageId: !Ref LatestAmiId
-    InstanceType: t2.micro
-    KeyName: !Ref KeyName
-    SecurityGroupIds:
-      - !Ref WebServerSecurityGroup
-    Tags:
-      - Key: Name
-        Value: !Sub Web Server of ${AWS::StackName} Stack
-    UserData: !Base64 |
-      #! /bin/bash
-      dnf update -y
-      dnf install python3 -y
-      dnf install python3-pip -y
-      pip3 install flask
-      dnf install git -y
-      FOLDER="https://raw.githubusercontent.com/EdanurGega/Romen-Number-Concentor-proje4/main/templates"
-      cd /home/ec2-user
-      wget -P templates ${FOLDER}/index.html
-      wget -P templates ${FOLDER}/result.html
-      wget ${FOLDER}/roman-numerals-converter-app.py
-      python3 roman-numerals-converter-app.py
+  WebServerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable HTTP for Flask Web Server and SSH port to secure reach to my EC2
+      GroupName: eda-roman-number-conventer
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp #required
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: 0.0.0.0/0
+  WebServerHost:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !Ref LatestAmiId
+      InstanceType: t2.micro
+      KeyName: !Ref KeyName
+      SecurityGroupIds:
+        - !Ref WebServerSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub Web Server of ${AWS::StackName} Stack
+      UserData: !Base64 |
+        #! /bin/bash
+        dnf update -y
+        dnf install python3 -y
+        dnf install python3-pip -y
+        pip3 install flask
+        dnf install git -y
+        FOLDER="https://raw.githubusercontent.com/EdanurGega/Romen-Number-Concentor-proje4/main/templates"
+        cd /home/ec2-user
+        wget -P templates ${FOLDER}/index.html
+        wget -P templates ${FOLDER}/result.html
+        wget https://raw.githubusercontent.com/EdanurGega/Romen-Number-Concentor-proje4/main/roman-numerals-converter-app.py
+        python3 roman-numerals-converter-app.py
 
 Outputs:
   WebsiteURL:
     Value: !Sub
-      - http://${PIA}
+      - http://${PIA}:8080
       - PIA: !GetAtt WebServerHost.PublicDnsName
     Description: Roman Numerals Converter Application URL
