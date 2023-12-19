@@ -56,11 +56,11 @@ Resources:
         dnf install python3-pip -y
         pip3 install flask
         dnf install git -y
-        FOLDER="https://raw.githubusercontent.com/EdanurGega/Romen-Number-Concentor-proje4/main/templates"
+        FOLDER="https://raw.githubusercontent.com/EdanurGega/Romen-Number-Conventor-proje4/main/templates"
         cd /home/ec2-user
         wget -P templates ${FOLDER}/index.html
         wget -P templates ${FOLDER}/result.html
-        wget https://raw.githubusercontent.com/EdanurGega/Romen-Number-Concentor-proje4/main/roman-numerals-converter-app.py
+        wget https://raw.githubusercontent.com/EdanurGega/Romen-Number-Conventor-proje4/main/roman-numerals-converter-app.py
         python3 roman-numerals-converter-app.py
 
 Outputs:
